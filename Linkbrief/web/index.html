@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10120f">
+  <meta name="description" content="Create shorter links, track every click, and turn your audience into actionable insights with LinkBrief.">
+  <title>LinkBrief — Short links. Clear insights.</title>
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('lb_theme');
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.documentElement.dataset.theme = savedTheme || (prefersLight ? 'light' : 'dark');
+    } catch (error) {
+      document.documentElement.dataset.theme = 'dark';
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="site-body">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="LinkBrief home"><span class="brand-mark">↗</span>linkbrief<span class="brand-period">.</span></a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="#features">Why LinkBrief</a>
+      <a href="login.html">Dashboard</a>
+    </nav>
+    <div class="header-actions">
+      <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false"><span id="themeIcon" aria-hidden="true">☼</span><span id="themeLabel">Light mode</span></button>
+      <a class="button button-small button-dark header-cta" href="login.html">Get started <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> The link toolkit for what’s next</div>
+        <h1>Make every link<br>look and <span class="headline-highlight">appear shorter.</span></h1>
+        <p class="hero-description">Create memorable short links, understand every click, and make your next move with confidence.</p>
+        <form class="hero-form" id="heroForm">
+          <span class="url-icon" aria-hidden="true">↗</span>
+          <label class="visually-hidden" for="heroUrl">Paste a long URL</label>
+          <input id="heroUrl" type="url" placeholder="Paste your long link here..." autocomplete="url">
+          <button class="button button-primary" id="heroBtn" type="submit">Shorten link <span aria-hidden="true">→</span></button>
+        </form>
+        <div id="heroResult" class="hero-result" hidden aria-live="polite"></div>
+        <div class="hero-footnote"><span class="check-icon">✓</span> Free to start <span class="footnote-divider">·</span> No credit card needed</div>
+      </div>
+
+      <div class="hero-visual" aria-label="Link analytics preview">
+        <div class="visual-orbit orbit-one"></div>
+        <div class="visual-orbit orbit-two"></div>
+        <div class="preview-card">
+          <div class="preview-topline"><span class="preview-label"><span class="live-dot"></span> LIVE PERFORMANCE</span><span class="preview-menu">•••</span></div>
+          <div class="preview-title-row"><div><div class="preview-title">Campaign overview</div><div class="preview-subtitle">Your links are having a moment.</div></div><span class="trend-pill">↗ 18.6%</span></div>
+          <div class="preview-metrics"><div><span class="metric-label">TOTAL CLICKS</span><strong>24,891</strong></div><div><span class="metric-label">TOP LINK</span><strong class="metric-link">lnkb.rf/summer</strong></div></div>
+          <div class="chart-wrap">
+            <div class="chart-y-labels"><span>8k</span><span>6k</span><span>4k</span><span>2k</span></div>
+            <svg class="chart-svg" viewBox="0 0 470 145" role="img" aria-label="Clicks trending upwards over the last seven days">
+              <defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#c8fa67" stop-opacity=".25"/><stop offset="100%" stop-color="#c8fa67" stop-opacity="0"/></linearGradient></defs>
+              <path class="chart-grid" d="M0 18H470M0 53H470M0 88H470M0 123H470"/>
+              <path class="chart-area" d="M0 108 C25 100 38 103 58 93 S91 92 116 79 S150 87 177 67 S210 71 235 59 S270 69 294 47 S329 57 352 39 S392 43 412 23 S449 30 470 10 V145H0Z"/>
+              <path class="chart-line" d="M0 108 C25 100 38 103 58 93 S91 92 116 79 S150 87 177 67 S210 71 235 59 S270 69 294 47 S329 57 352 39 S392 43 412 23 S449 30 470 10"/>
+              <circle class="chart-point" cx="412" cy="23" r="4"/>
+            </svg>
+          </div>
+          <div class="chart-x-labels"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span></div>
+          <div class="preview-link"><span class="link-mini-icon">↗</span><div><strong>lnkb.rf/summer</strong><span>shop.example.com/summer-collection</span></div><span class="preview-clicks">8.2k <small>clicks</small></span></div>
+        </div>
+        <div class="floating-tag tag-secure"><span>⌁</span> Smart &amp; secure</div>
+        <div class="floating-tag tag-clicks"><span class="tag-icon">↗</span><div><strong>+2.4k</strong><small>new clicks today</small></div></div>
+      </div>
+      <div class="hero-bottom"><span>BUILT FOR THE LINKS THAT MOVE YOU</span><div><span>CREATORS</span><span>GROWING TEAMS</span><span>BIG IDEAS</span></div></div>
+    </section>
+
+    <section class="features section-shell" id="features">
+      <div class="section-intro"><div><div class="eyebrow"><span class="eyebrow-dot"></span> Small links. Big picture.</div><h2>More than a shorter URL.</h2></div><p>Everything you need to create, share, and learn from every link — all in one beautifully simple place.</p></div>
+      <div class="feature-grid">
+        <article class="feature-card"><span class="feature-icon icon-lime">↗</span><h3>Links that stick</h3><p>Make long, messy URLs short, tidy, and easy to remember. Add a custom slug that sounds like you.</p><span class="feature-number">01 / CREATE</span></article>
+        <article class="feature-card"><span class="feature-icon icon-blue">⌁</span><h3>Know your audience</h3><p>See clicks come in and spot what resonates, so you can spend more time on what works.</p><span class="feature-number">02 / UNDERSTAND</span></article>
+        <article class="feature-card"><span class="feature-icon icon-peach">◈</span><h3>Share with confidence</h3><p>Protect links with a password, choose when they expire, and share them on your terms.</p><span class="feature-number">03 / SHARE</span></article>
+      </div>
+    </section>
+
+    <section class="closing section-shell"><div><span class="closing-spark">✳</span><h2>Your next great link<br>starts right here.</h2><p>Make your links count with LinkBrief.</p></div><a href="login.html" class="button button-primary">Get started for free <span aria-hidden="true">→</span></a></section>
+  </main>
+
+  <footer class="site-footer section-shell"><a class="brand" href="index.html"><span class="brand-mark">↗</span>linkbrief<span class="brand-period">.</span></a><span>Short links. Clear insights. <span class="footer-copyright">© 2026 LinkBrief</span></span></footer>
+  <div id="toasts" class="toast-stack" aria-live="polite"></div>
+  <script src="app.js"></script>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+    const themeIcon = document.getElementById('themeIcon');
+    function setTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+      const isLight = theme === 'light';
+      themeToggle.setAttribute('aria-pressed', String(isLight));
+      themeToggle.setAttribute('aria-label', `Switch to ${isLight ? 'dark' : 'light'} mode`);
+      themeLabel.textContent = `${isLight ? 'Dark' : 'Light'} mode`;
+      themeIcon.textContent = isLight ? '☾' : '☼';
+      document.querySelector('meta[name="theme-color"]').content = isLight ? '#f6f8f1' : '#10120f';
+      try {
+        localStorage.setItem('lb_theme', theme);
+      } catch (error) {
+        toast('Theme preference could not be saved', 'error');
+      }
+    }
+    setTheme(document.documentElement.dataset.theme || 'dark');
+    themeToggle.addEventListener('click', () => {
+      setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
+    });
+
+    const heroForm = document.getElementById('heroForm');
+    const heroInput = document.getElementById('heroUrl');
+    const heroButton = document.getElementById('heroBtn');
+    const heroResult = document.getElementById('heroResult');
+
+    heroForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const value = heroInput.value.trim();
+      if (!value) return toast('Paste a link to get started', 'error');
+      if (!/^https?:\/\//i.test(value)) return toast('Use a link that starts with http:// or https://', 'error');
+
+      heroButton.disabled = true;
+      heroButton.textContent = 'Shortening…';
+      heroResult.hidden = true;
+      try {
+        const response = await api('create', { longUrl: value });
+        if (!response.success || !response.slug) {
+          toast(response.error || 'Could not shorten this link', 'error');
+          return;
+        }
+
+        const shortUrl = `${API}/?s=${encodeURIComponent(response.slug)}`;
+        const link = document.createElement('a');
+        link.className = 'hero-result-link';
+        link.href = shortUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = shortUrl;
+
+        const copyButton = document.createElement('button');
+        copyButton.className = 'hero-result-copy';
+        copyButton.type = 'button';
+        copyButton.textContent = 'Copy link';
+        copyButton.addEventListener('click', async () => {
+          try {
+            await copyText(shortUrl);
+          } catch (error) {
+            toast('Could not copy the link', 'error');
+          }
+        });
+
+        const resultIcon = document.createElement('span');
+        resultIcon.className = 'hero-result-icon';
+        resultIcon.textContent = '✓';
+        resultIcon.setAttribute('aria-hidden', 'true');
+        const resultCopy = document.createElement('div');
+        resultCopy.className = 'hero-result-copy-block';
+        const resultTitle = document.createElement('strong');
+        resultTitle.textContent = 'Your short link is ready';
+        resultCopy.append(resultTitle, link);
+        heroResult.replaceChildren(resultIcon, resultCopy, copyButton);
+        heroResult.hidden = false;
+        toast('Your link is ready to share');
+      } catch (error) {
+        toast(error.message || 'Could not shorten this link', 'error');
+      } finally {
+        heroButton.disabled = false;
+        heroButton.innerHTML = 'Shorten link <span aria-hidden="true">→</span>';
+      }
+    });
+  </script>
+</body>
+</html>
