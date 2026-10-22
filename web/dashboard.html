@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10120f">
+  <title>Dashboard — LinkBrief</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body class="dashboard-body">
+  <aside class="dashboard-sidebar">
+    <a class="brand" href="index.html"><span class="brand-mark">↗</span>linkbrief<span class="brand-period">.</span></a>
+    <div class="sidebar-section-label">WORKSPACE</div>
+    <a href="#overview" class="sidebar-link active"><span>▦</span> Overview</a>
+    <a href="#your-links" class="sidebar-link"><span>↗</span> Your links</a>
+    <div class="sidebar-bottom"><div class="sidebar-account"><span class="avatar">L</span><div><strong>Signed in as</strong><span id="userEmail"></span></div></div><button onclick="logout()" class="logout-button">Log out <span aria-hidden="true">↗</span></button></div>
+  </aside>
+
+  <main class="dashboard-main" id="overview">
+    <header class="dashboard-header"><div><div class="eyebrow"><span class="eyebrow-dot"></span> YOUR LINKBRIEF WORKSPACE</div><h1>Make it a good one.</h1><p>Your links are ready when you are.</p></div><a href="index.html" class="button button-outline dashboard-home">← Home</a></header>
+    <section class="stats-grid" aria-label="Link statistics">
+      <article class="stat-card stat-highlight"><div class="stat-topline"><span>TOTAL CLICKS</span><span class="stat-icon">↗</span></div><strong id="totalClicks">0</strong><p>Across all your links</p></article>
+      <article class="stat-card"><div class="stat-topline"><span>YOUR LINKS</span><span class="stat-icon">⌁</span></div><strong id="totalLinks">0</strong><p>Ready to be shared</p></article>
+      <article class="stat-card stat-note"><div class="stat-note-mark">✳</div><div><strong>Good things are<br>one click away.</strong><span>Shorten a link and see what happens.</span></div></article>
+    </section>
+
+    <section class="dashboard-grid">
+      <div class="dashboard-column">
+        <section class="panel create-panel" aria-labelledby="create-heading">
+          <div class="panel-heading"><div><div class="panel-kicker">MAKE A NEW LINK</div><h2 id="create-heading">Let’s make it brief.</h2></div><span class="panel-step">01</span></div>
+          <label class="field-label" for="longUrl">The long link</label>
+          <input id="longUrl" type="url" placeholder="https://your-very-long-link.com/..." class="form-input">
+          <div class="form-row">
+            <div class="slug-field"><label class="field-label" for="customSlug">Custom ending <span class="optional-label">OPTIONAL</span></label><div class="slug-input-wrap"><span class="slug-prefix">lnkb.rf/</span><input id="customSlug" placeholder="your-link" class="form-input"></div><span id="slugStatus" class="slug-status" aria-live="polite"></span></div>
+            <div><label class="field-label" for="expiry">Link expires <span class="optional-label">OPTIONAL</span></label><input id="expiry" type="date" class="form-input"></div>
+          </div>
+          <div class="create-controls"><label class="password-option" for="pwToggle"><input type="checkbox" id="pwToggle"><span class="custom-checkbox"></span><span>Password protect</span></label><input id="linkPass" type="password" placeholder="Add a password" class="form-input password-input" hidden><button id="createBtn" class="button button-primary create-button" type="button">Shorten link <span aria-hidden="true">→</span></button></div>
+          <div id="result" class="result-card" hidden></div>
+          <div id="qr" class="qr-result" hidden></div>
+        </section>
+
+        <section class="panel links-panel" id="your-links" aria-labelledby="links-heading">
+          <div class="panel-heading links-heading"><div><div class="panel-kicker">YOUR COLLECTION</div><h2 id="links-heading">All your links.</h2></div><label class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Find a link..." aria-label="Search your links"></label></div>
+          <div id="links" class="links-list"><div class="empty-state">Loading your links...</div></div>
+        </section>
+      </div>
+      <div class="dashboard-column">
+        <section class="panel chart-panel" aria-labelledby="chart-heading"><div class="panel-heading"><div><div class="panel-kicker">THE BIG PICTURE</div><h2 id="chart-heading">Clicks over time.</h2></div><span class="chart-period">7 DAYS</span></div><div class="chart-container"><canvas id="clickChart" aria-label="Clicks over the last seven days" role="img"></canvas></div><div class="chart-caption"><span class="chart-legend-dot"></span> Link clicks <span class="chart-caption-muted">· last 7 days</span></div></section>
+        <section class="insight-card"><span class="insight-icon">✳</span><div class="insight-kicker">A LITTLE REMINDER</div><p>Every click is someone choosing to see what you shared.</p><span class="insight-signoff">Make it worth the visit.</span></section>
+      </div>
+    </section>
+    <footer class="dashboard-footer">LinkBrief <span>·</span> Short links. Clear insights.</footer>
+  </main>
+  <div id="toasts" class="toast-stack" aria-live="polite"></div>
+  <script src="app.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
