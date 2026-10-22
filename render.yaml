@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: linkbrief
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/?action=health
+    envVars:
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_HOST
+        sync: false
+      - key: DB_NAME
+        value: linkbrief
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
