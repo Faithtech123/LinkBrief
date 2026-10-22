@@ -37,7 +37,7 @@
     <section class="hero section-shell">
       <div class="hero-copy">
         <div class="eyebrow"><span class="eyebrow-dot"></span> The link toolkit for what’s next</div>
-        <h1>Make every link<br>work <span class="headline-highlight">harder.</span></h1>
+        <h1>Make every link<br>look and <span class="headline-highlight">appear shorter.</span></h1>
         <p class="hero-description">Create memorable short links, understand every click, and make your next move with confidence.</p>
         <form class="hero-form" id="heroForm">
           <span class="url-icon" aria-hidden="true">↗</span>
@@ -148,8 +148,7 @@
         copyButton.textContent = 'Copy link';
         copyButton.addEventListener('click', async () => {
           try {
-            await navigator.clipboard.writeText(shortUrl);
-            toast('Short link copied');
+            await copyText(shortUrl);
           } catch (error) {
             toast('Could not copy the link', 'error');
           }

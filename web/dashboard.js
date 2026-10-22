@@ -4,6 +4,7 @@ let chartInstance = null;
 const passwordToggle = document.getElementById('pwToggle');
 const passwordInput = document.getElementById('linkPass');
 const searchInput = document.getElementById('search');
+let slugCheckSequence = 0;
 
 passwordToggle.addEventListener('change', () => {
   passwordInput.hidden = !passwordToggle.checked;
@@ -13,6 +14,7 @@ passwordToggle.addEventListener('change', () => {
 document.getElementById('customSlug').addEventListener('input', async event => {
   const slug = event.target.value.trim();
   const status = document.getElementById('slugStatus');
+  const checkSequence = ++slugCheckSequence;
   if (!slug) {
     status.textContent = '';
     return;
@@ -21,11 +23,13 @@ document.getElementById('customSlug').addEventListener('input', async event => {
   status.textContent = 'Checking availability...';
   try {
     const response = await fetch(`${API}/?action=check-slug&slug=${encodeURIComponent(slug)}`, { credentials: 'include' });
-    if (!response.ok) throw new Error('Could not check slug availability');
     const data = await response.json();
+    if (checkSequence !== slugCheckSequence) return;
+    if (!response.ok || data.error) throw new Error(data.error || 'Could not check slug availability');
     status.textContent = data.available ? 'Available' : 'Already taken';
     status.style.color = data.available ? '#c8fa67' : '#ff9a8f';
   } catch (error) {
+    if (checkSequence !== slugCheckSequence) return;
     status.textContent = 'Could not check availability';
     status.style.color = '#ff9a8f';
   }
@@ -196,15 +200,6 @@ async function loadLinks() {
       }
     }
   });
-}
-
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    toast('Link copied to clipboard');
-  } catch (error) {
-    toast('Could not copy the link', 'error');
-  }
 }
 
 async function deleteLink(id) {

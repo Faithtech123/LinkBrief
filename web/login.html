@@ -37,18 +37,41 @@
   <script>
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-      const response = await api('login', { email: emailInput.value, password: passwordInput.value });
-      if (response.success) location.href = 'dashboard.html';
-      else toast(response.error || 'Unable to log in', 'error');
-    });
-    document.getElementById('registerBtn').addEventListener('click', async () => {
-      const response = await api('register', { email: emailInput.value, password: passwordInput.value });
-      if (response.success) toast('Account created. You can now log in.');
-      else toast(response.error || 'Unable to create account', 'error');
-    });
+    const loginButton = document.getElementById('loginBtn');
+    const registerButton = document.getElementById('registerBtn');
+    async function submitAuth(action, button) {
+      if (!emailInput.value.trim() || !emailInput.checkValidity()) {
+        toast('Enter a valid email address', 'error');
+        emailInput.focus();
+        return;
+      }
+      if (passwordInput.value.length < 6) {
+        toast('Your password must be at least 6 characters', 'error');
+        passwordInput.focus();
+        return;
+      }
+
+      button.disabled = true;
+      try {
+        const response = await api(action, { email: emailInput.value.trim(), password: passwordInput.value });
+        if (response.error) {
+          toast(response.error, 'error');
+        } else if (action === 'login' && response.success) {
+          location.href = 'dashboard.html';
+        } else if (response.success) {
+          toast('Account created. You can now log in.');
+          passwordInput.value = '';
+        }
+      } catch (error) {
+        toast(error.message || 'Could not reach the server. Please try again.', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+    loginButton.addEventListener('click', () => submitAuth('login', loginButton));
+    registerButton.addEventListener('click', () => submitAuth('register', registerButton));
     passwordInput.addEventListener('keydown', event => {
-      if (event.key === 'Enter') document.getElementById('loginBtn').click();
+      if (event.key === 'Enter') submitAuth('login', loginButton);
     });
     const pendingUrl = localStorage.getItem('lb_pendingUrl');
     if (pendingUrl) {
