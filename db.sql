@@ -1,6 +1,5 @@
 CREATE DATABASE IF NOT EXISTS linkbrief CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE linkbrief;
-
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -8,7 +7,6 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE TABLE IF NOT EXISTS links (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,
@@ -23,7 +21,6 @@ CREATE TABLE IF NOT EXISTS links (
     KEY idx_user (user_id),
     CONSTRAINT links_ibfk_1 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
 CREATE TABLE IF NOT EXISTS clicks_log (
     id INT AUTO_INCREMENT PRIMARY KEY,
     link_id INT NOT NULL,

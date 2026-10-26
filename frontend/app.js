@@ -1,4 +1,4 @@
-const API = new URL('../api', window.location.href).href.replace(/\/$/, '');
+const API = new URL(window.LINKBRIEF_API_URL || '../backend', window.location.href).href.replace(/\/$/, '');
 async function api(action, data=null){
   const res = await fetch(`${API}/?action=${encodeURIComponent(action)}`, {method:'POST', credentials:'include', headers:{'Content-Type':'application/json'}, body: data?JSON.stringify(data):null});
   const response = await res.json().catch(() => { throw new Error('The server returned an invalid response'); });

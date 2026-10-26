@@ -32,7 +32,6 @@
       <a class="button button-small button-dark header-cta" href="login.html">Get started <span aria-hidden="true">↗</span></a>
     </div>
   </header>
-
   <main>
     <section class="hero section-shell">
       <div class="hero-copy">
@@ -48,7 +47,6 @@
         <div id="heroResult" class="hero-result" hidden aria-live="polite"></div>
         <div class="hero-footnote"><span class="check-icon">✓</span> Free to start <span class="footnote-divider">·</span> No credit card needed</div>
       </div>
-
       <div class="hero-visual" aria-label="Link analytics preview">
         <div class="visual-orbit orbit-one"></div>
         <div class="visual-orbit orbit-two"></div>
@@ -74,7 +72,6 @@
       </div>
       <div class="hero-bottom"><span>BUILT FOR THE LINKS THAT MOVE YOU</span><div><span>CREATORS</span><span>GROWING TEAMS</span><span>BIG IDEAS</span></div></div>
     </section>
-
     <section class="features section-shell" id="features">
       <div class="section-intro"><div><div class="eyebrow"><span class="eyebrow-dot"></span> Small links. Big picture.</div><h2>More than a shorter URL.</h2></div><p>Everything you need to create, share, and learn from every link — all in one beautifully simple place.</p></div>
       <div class="feature-grid">
@@ -83,12 +80,11 @@
         <article class="feature-card"><span class="feature-icon icon-peach">◈</span><h3>Share with confidence</h3><p>Protect links with a password, choose when they expire, and share them on your terms.</p><span class="feature-number">03 / SHARE</span></article>
       </div>
     </section>
-
     <section class="closing section-shell"><div><span class="closing-spark">✳</span><h2>Your next great link<br>starts right here.</h2><p>Make your links count with LinkBrief.</p></div><a href="login.html" class="button button-primary">Get started for free <span aria-hidden="true">→</span></a></section>
   </main>
-
   <footer class="site-footer section-shell"><a class="brand" href="index.html"><span class="brand-mark">↗</span>linkbrief<span class="brand-period">.</span></a><span>Short links. Clear insights. <span class="footer-copyright">© 2026 LinkBrief</span></span></footer>
   <div id="toasts" class="toast-stack" aria-live="polite"></div>
+  <script src="config.js"></script>
   <script src="app.js"></script>
   <script>
     const themeToggle = document.getElementById('themeToggle');
@@ -112,18 +108,15 @@
     themeToggle.addEventListener('click', () => {
       setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
     });
-
     const heroForm = document.getElementById('heroForm');
     const heroInput = document.getElementById('heroUrl');
     const heroButton = document.getElementById('heroBtn');
     const heroResult = document.getElementById('heroResult');
-
     heroForm.addEventListener('submit', async event => {
       event.preventDefault();
       const value = heroInput.value.trim();
       if (!value) return toast('Paste a link to get started', 'error');
       if (!/^https?:\/\//i.test(value)) return toast('Use a link that starts with http:// or https://', 'error');
-
       heroButton.disabled = true;
       heroButton.textContent = 'Shortening…';
       heroResult.hidden = true;
@@ -133,7 +126,6 @@
           toast(response.error || 'Could not shorten this link', 'error');
           return;
         }
-
         const shortUrl = `${API}/?s=${encodeURIComponent(response.slug)}`;
         const link = document.createElement('a');
         link.className = 'hero-result-link';
@@ -141,7 +133,6 @@
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         link.textContent = shortUrl;
-
         const copyButton = document.createElement('button');
         copyButton.className = 'hero-result-copy';
         copyButton.type = 'button';
@@ -153,7 +144,6 @@
             toast('Could not copy the link', 'error');
           }
         });
-
         const resultIcon = document.createElement('span');
         resultIcon.className = 'hero-result-icon';
         resultIcon.textContent = '✓';

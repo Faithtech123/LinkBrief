@@ -1,0 +1,1 @@
+window.LINKBRIEF_API_URL = 'https://linkbrief-api.onrender.com';

@@ -33,6 +33,7 @@
     </section>
   </main>
   <div id="toasts" class="toast-stack" aria-live="polite"></div>
+  <script src="config.js"></script>
   <script src="app.js"></script>
   <script>
     const emailInput = document.getElementById('email');
@@ -50,7 +51,6 @@
         passwordInput.focus();
         return;
       }
-
       button.disabled = true;
       try {
         const response = await api(action, { email: emailInput.value.trim(), password: passwordInput.value });

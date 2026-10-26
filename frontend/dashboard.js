@@ -1,16 +1,13 @@
 let links = [];
 let chartInstance = null;
-
 const passwordToggle = document.getElementById('pwToggle');
 const passwordInput = document.getElementById('linkPass');
 const searchInput = document.getElementById('search');
 let slugCheckSequence = 0;
-
 passwordToggle.addEventListener('change', () => {
   passwordInput.hidden = !passwordToggle.checked;
   if (passwordToggle.checked) passwordInput.focus();
 });
-
 document.getElementById('customSlug').addEventListener('input', async event => {
   const slug = event.target.value.trim();
   const status = document.getElementById('slugStatus');
@@ -19,7 +16,6 @@ document.getElementById('customSlug').addEventListener('input', async event => {
     status.textContent = '';
     return;
   }
-
   status.textContent = 'Checking availability...';
   try {
     const response = await fetch(`${API}/?action=check-slug&slug=${encodeURIComponent(slug)}`, { credentials: 'include' });
@@ -34,19 +30,16 @@ document.getElementById('customSlug').addEventListener('input', async event => {
     status.style.color = '#ff9a8f';
   }
 });
-
 document.getElementById('createBtn').addEventListener('click', async () => {
   const longUrl = document.getElementById('longUrl').value.trim();
   const customSlug = document.getElementById('customSlug').value.trim();
   const expiry = document.getElementById('expiry').value;
   const password = passwordToggle.checked ? passwordInput.value : '';
-
   if (!longUrl) {
     toast('Add a link before shortening it', 'error');
     document.getElementById('longUrl').focus();
     return;
   }
-
   const button = document.getElementById('createBtn');
   button.disabled = true;
   button.innerHTML = 'Making it brief…';
@@ -56,7 +49,6 @@ document.getElementById('createBtn').addEventListener('click', async () => {
       toast(response.error, 'error');
       return;
     }
-
     const shortUrl = `${API}/?s=${encodeURIComponent(response.slug)}`;
     const result = document.getElementById('result');
     result.replaceChildren();
@@ -67,7 +59,6 @@ document.getElementById('createBtn').addEventListener('click', async () => {
     const destination = document.createElement('span');
     destination.textContent = longUrl;
     link.append(slug, destination);
-
     const actions = document.createElement('div');
     actions.className = 'result-actions';
     const copyButton = document.createElement('button');
@@ -82,12 +73,10 @@ document.getElementById('createBtn').addEventListener('click', async () => {
     actions.append(copyButton, openLink);
     result.append(link, actions);
     result.hidden = false;
-
     const qr = document.getElementById('qr');
     qr.replaceChildren();
     qr.hidden = false;
     new QRCode(qr, { text: shortUrl, width: 130, height: 130 });
-
     await loadLinks();
     toast('Your link is ready to go!');
   } catch (error) {
@@ -97,21 +86,18 @@ document.getElementById('createBtn').addEventListener('click', async () => {
     button.innerHTML = 'Shorten link <span aria-hidden="true">→</span>';
   }
 });
-
 function renderLinks() {
   const container = document.getElementById('links');
   const query = searchInput.value.trim().toLowerCase();
   const filteredLinks = links.filter(link =>
     `${link.slug} ${link.long_url} ${link.status}`.toLowerCase().includes(query)
   );
-
   if (filteredLinks.length === 0) {
     container.innerHTML = links.length
       ? '<div class="empty-state">No links match that search.</div>'
       : '<div class="empty-state">No links yet. Shorten your first one above.</div>';
     return;
   }
-
   container.replaceChildren(...filteredLinks.map(link => {
     const shortUrl = `${API}/?s=${encodeURIComponent(link.slug)}`;
     const row = document.createElement('article');
@@ -133,7 +119,6 @@ function renderLinks() {
     destination.textContent = link.long_url;
     meta.append(slug, status, clicks);
     main.append(meta, destination);
-
     const actions = document.createElement('div');
     actions.className = 'link-row-actions';
     const copyButton = document.createElement('button');
@@ -158,7 +143,6 @@ function renderLinks() {
     return row;
   }));
 }
-
 async function loadLinks() {
   const me = await apiGet('me');
   if (!me.user) {
@@ -166,13 +150,11 @@ async function loadLinks() {
     return;
   }
   document.getElementById('userEmail').textContent = me.user;
-
   const data = await apiGet('my-links');
   links = data.links || [];
   document.getElementById('totalLinks').textContent = data.totalLinks || 0;
   document.getElementById('totalClicks').textContent = Number(data.totalClicks || 0).toLocaleString();
   renderLinks();
-
   const chart = document.getElementById('clickChart');
   if (chartInstance) chartInstance.destroy();
   chartInstance = new Chart(chart, {
@@ -201,7 +183,6 @@ async function loadLinks() {
     }
   });
 }
-
 async function deleteLink(id) {
   if (!confirm('Delete this link? This cannot be undone.')) return;
   try {
@@ -216,20 +197,16 @@ async function deleteLink(id) {
     toast(error.message || 'Could not delete the link', 'error');
   }
 }
-
 async function logout() {
   await api('logout');
   location.href = 'login.html';
 }
-
 searchInput.addEventListener('input', renderLinks);
-
 const pendingUrl = sessionStorage.getItem('lb_pendingUrl');
 if (pendingUrl) {
   document.getElementById('longUrl').value = pendingUrl;
   sessionStorage.removeItem('lb_pendingUrl');
 }
-
 loadLinks().catch(error => {
   toast(error.message || 'Could not load your dashboard', 'error');
 });
