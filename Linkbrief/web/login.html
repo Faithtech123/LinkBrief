@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10120f">
+  <title>Welcome to LinkBrief</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+  <a class="brand auth-brand" href="index.html"><span class="brand-mark">↗</span>linkbrief<span class="brand-period">.</span></a>
+  <main class="auth-layout">
+    <section class="auth-story">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> Your links, leveled up</div>
+      <h1>Good links<br>go <span class="headline-highlight">places.</span></h1>
+      <p>Create something worth clicking. Then see where it takes you.</p>
+      <div class="auth-story-stat"><span class="auth-stat-mark">↗</span><div><strong>Every click tells a story.</strong><span>Find yours in the LinkBrief dashboard.</span></div></div>
+      <div class="auth-decoration" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+    <section class="auth-card">
+      <div class="auth-card-heading"><span class="auth-kicker">WELCOME TO LINKBRIEF</span><h2>Pick up where<br>your links take you.</h2><p>Log in or create an account to get started.</p></div>
+      <label class="field-label" for="email">Email address</label>
+      <input id="email" type="email" placeholder="you@example.com" autocomplete="email" class="form-input">
+      <label class="field-label password-label" for="password">Password</label>
+      <input id="password" type="password" placeholder="At least 6 characters" autocomplete="current-password" class="form-input">
+      <button id="loginBtn" class="button button-primary auth-submit" type="button">Log in <span aria-hidden="true">→</span></button>
+      <div class="auth-separator"><span>NEW AROUND HERE?</span></div>
+      <button id="registerBtn" class="button button-outline auth-submit" type="button">Create your account</button>
+      <p class="auth-back"><a href="index.html">← Back to home</a></p>
+    </section>
+  </main>
+  <div id="toasts" class="toast-stack" aria-live="polite"></div>
+  <script src="app.js"></script>
+  <script>
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginButton = document.getElementById('loginBtn');
+    const registerButton = document.getElementById('registerBtn');
+    async function submitAuth(action, button) {
+      if (!emailInput.value.trim() || !emailInput.checkValidity()) {
+        toast('Enter a valid email address', 'error');
+        emailInput.focus();
+        return;
+      }
+      if (passwordInput.value.length < 6) {
+        toast('Your password must be at least 6 characters', 'error');
+        passwordInput.focus();
+        return;
+      }
+
+      button.disabled = true;
+      try {
+        const response = await api(action, { email: emailInput.value.trim(), password: passwordInput.value });
+        if (response.error) {
+          toast(response.error, 'error');
+        } else if (action === 'login' && response.success) {
+          location.href = 'dashboard.html';
+        } else if (response.success) {
+          toast('Account created. You can now log in.');
+          passwordInput.value = '';
+        }
+      } catch (error) {
+        toast(error.message || 'Could not reach the server. Please try again.', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+    loginButton.addEventListener('click', () => submitAuth('login', loginButton));
+    registerButton.addEventListener('click', () => submitAuth('register', registerButton));
+    passwordInput.addEventListener('keydown', event => {
+      if (event.key === 'Enter') submitAuth('login', loginButton);
+    });
+    const pendingUrl = localStorage.getItem('lb_pendingUrl');
+    if (pendingUrl) {
+      localStorage.removeItem('lb_pendingUrl');
+      sessionStorage.setItem('lb_pendingUrl', pendingUrl);
+    }
+  </script>
+</body>
+</html>
